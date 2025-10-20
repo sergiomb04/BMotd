@@ -17,7 +17,7 @@ public class PingEvent implements Listener {
         MOTDManager motdManager = plugin.getMotdManager();
 
         PendingConnection connection = event.getConnection();
-        String domain = null;
+        String domain;
         try {
             domain = connection.getVirtualHost().getHostName().toLowerCase();
         } catch (Exception e) {
@@ -33,19 +33,15 @@ public class PingEvent implements Listener {
         ServerPing serverPing = event.getResponse();
         event.setResponse(serverPing);
 
-        if (plugin.getMotdManager().getConfig().getBoolean("config.whitelist-enabled")) {
+        if (motdManager.isWhitelistActive(domain)) {
             serverPing.setVersion(new net.md_5.bungee.api.ServerPing.Protocol(motdManager.getWhitelistText(domain), 4));
         }
 
-        if (plugin.getMotdUtil().getMOTDFromDomain(domain.replace(".", "-")) != null) {
-            serverPing.setDescriptionComponent(plugin.getMotdUtil().getMOTDFromDomain(domain.replace(".", "-")));
-        } else {
-            serverPing.setDescriptionComponent(motdManager.getDescriptionComponent());
-        }
+        serverPing.setDescriptionComponent(motdManager.getMOTDFromDomain(domain));
 
         serverPing.setFavicon(motdManager.getFavicon(domain));
 
-        serverPing.setPlayers(motdManager.getPlayers());
+        serverPing.setPlayers(motdManager.getPlayers(domain));
         event.setResponse(serverPing);
 
         System.out.println("[BMOTD] " + event.getConnection().getAddress() + " pinged with domain -> " + domain);

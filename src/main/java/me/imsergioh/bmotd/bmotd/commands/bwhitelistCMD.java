@@ -42,10 +42,10 @@ public class bwhitelistCMD extends Command {
 
                     // KICK IF IS CONNECTED (TRY TO AVOID ERRORS)
                     try {
-                        if (motdManager.isWhitelistActive()) {
+                        if (motdManager.isWhitelistActive(null)) {
                             ProxiedPlayer player = BMotd.getPlugin().getProxy().getPlayer(name);
                             if (player.isConnected()) {
-                                player.disconnect(ChatUtil.chatColor(plugin.getMotdManager().getConfig().getString("messages.not-whitelist")));
+                                player.disconnect(ChatUtil.chatColor(plugin.getMotdManager().getDefaultProfile().getNotWhitelistedError()));
                             }
                         }
                     } catch (Exception e) {

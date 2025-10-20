@@ -22,7 +22,7 @@ public class maintenanceCMD extends Command {
         }
 
 
-        boolean enabled = plugin.getMotdManager().toggleWhitelist();
+        boolean enabled = plugin.getMotdManager().toggleGlobalWhitelist();
 
         String feedBackMessage = enabled ?
                 "&fMantenimiento: &aActivado" :
@@ -32,7 +32,7 @@ public class maintenanceCMD extends Command {
         if (enabled) {
             for (ProxiedPlayer player : BMotd.getPlugin().getProxy().getPlayers()) {
                 if (!plugin.getMotdManager().hasWhitelist(player.getName())) {
-                    player.disconnect(ChatUtil.chatColor(plugin.getMotdManager().getConfig().getString("messages.not-whitelist")));
+                    player.disconnect(ChatUtil.chatColor(plugin.getMotdManager().getDefaultProfile().getNotWhitelistedError()));
                 }
             }
         }
