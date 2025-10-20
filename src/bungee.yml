@@ -1,7 +1,7 @@
 name: BMotd
-version: '${project.version}'
+version: '1.0.0'
 main: me.imsergioh.bmotd.bmotd.BMotd
-description: Bungeecord advances motd plugin
+description: BungeeCord advanced MOTD Plugin
 
 commands:
   bmotd:

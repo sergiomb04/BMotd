@@ -17,7 +17,7 @@ public class MOTDUtil {
 
     private Configuration config;
 
-    private HashMap<String, BaseComponent> motdMap = new HashMap<>();
+    private final HashMap<String, BaseComponent> motdMap = new HashMap<>();
 
     public MOTDUtil(){
         registerConfigFromConfig();
@@ -34,7 +34,9 @@ public class MOTDUtil {
         File file = new File(BMotd.getPlugin().getDataFolder(), "config.yml");
         try {
             this.config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
-        } catch (Exception e){e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace(System.out);
+        }
         for(String all : config.getSection("domain-profiles").getKeys()){
             List<String> motdList = config.getStringList("domain-profiles."+all+".motd");
             if (motdList.isEmpty()) motdList = BMotd.getPlugin().getMotdManager().getProfileMotdList();

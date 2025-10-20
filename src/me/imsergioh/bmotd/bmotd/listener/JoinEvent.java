@@ -3,9 +3,6 @@ package me.imsergioh.bmotd.bmotd.listener;
 import me.imsergioh.bmotd.bmotd.BMotd;
 import me.imsergioh.bmotd.bmotd.manager.MOTDManager;
 import me.imsergioh.bmotd.bmotd.util.ChatUtil;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.KeybindComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.event.PlayerHandshakeEvent;
 import net.md_5.bungee.api.event.ServerConnectEvent;
@@ -16,24 +13,22 @@ import net.md_5.bungee.event.EventPriority;
 
 public class JoinEvent implements Listener {
 
-    private BMotd plugin = BMotd.getPlugin();
+    private final BMotd plugin = BMotd.getPlugin();
 
     @EventHandler
     public void onHandshake(PlayerHandshakeEvent event) {
         MOTDManager motdManager = plugin.getMotdManager();
-        String domain = null;
+        String domain;
         try {
             domain = event.getConnection().getVirtualHost().getHostName().toLowerCase();
         } catch (Exception e) {
-            e.printStackTrace();
             event.getConnection().disconnect(TextComponent.fromLegacyText("Unknown host"));
             return;
         }
 
-        if (!motdManager.isAllowedDomain(domain)) {
+        if (motdManager.isNotAllowedDomain(domain)) {
             event.getConnection().disconnect(TextComponent.fromLegacyText("Unknown host"));
         }
-
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)

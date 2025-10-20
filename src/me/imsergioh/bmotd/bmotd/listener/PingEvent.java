@@ -2,18 +2,15 @@ package me.imsergioh.bmotd.bmotd.listener;
 
 import me.imsergioh.bmotd.bmotd.BMotd;
 import me.imsergioh.bmotd.bmotd.manager.MOTDManager;
-import me.imsergioh.bmotd.bmotd.util.ChatUtil;
-import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ServerPing;
 import net.md_5.bungee.api.connection.PendingConnection;
 import net.md_5.bungee.api.event.ProxyPingEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
-import net.md_5.bungee.protocol.Protocol;
 
 public class PingEvent implements Listener {
 
-    private BMotd plugin = BMotd.getPlugin();
+    private final BMotd plugin = BMotd.getPlugin();
 
     @EventHandler
     public void onEvent(ProxyPingEvent event) {
@@ -28,7 +25,7 @@ public class PingEvent implements Listener {
             return;
         }
 
-        if (!motdManager.isAllowedDomain(domain)) {
+        if (motdManager.isNotAllowedDomain(domain)) {
             cancel(event);
             return;
         }

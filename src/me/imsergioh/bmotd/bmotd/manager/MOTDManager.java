@@ -11,7 +11,6 @@ import net.md_5.bungee.config.ConfigurationProvider;
 import net.md_5.bungee.config.YamlConfiguration;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -57,23 +56,21 @@ public class MOTDManager {
         saveConfig();
     }
 
-    public boolean isAllowedDomain(String hostnameDomain) {
+    public boolean isNotAllowedDomain(String hostnameDomain) {
         if (domainsWhitelist().contains(hostnameDomain)) {
-            return true;
+            return false;
         }
-        // Verificar si el subdominio está en la lista blanca
+
         for (String dominioListaBlanca : domainsWhitelist()) {
-            // Verificar si el dominio de la lista blanca es un patrón que incluye subdominios
             if (dominioListaBlanca.startsWith("*.")) {
                 String dominioListaBlancaSinComodin = dominioListaBlanca.substring(2);
-                // Crear expresión regular para el patrón de subdominios
                 String regex = "^([a-z0-9]+(-[a-z0-9]+)*\\.)+" + Pattern.quote(dominioListaBlancaSinComodin) + "$";
                 if (hostnameDomain.matches(regex)) {
-                    return true;
+                    return false;
                 }
             }
         }
-        return false;
+        return true;
     }
 
     public List<String> domainsWhitelist() {
@@ -84,7 +81,7 @@ public class MOTDManager {
         try {
             this.config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(System.out);
         }
         profileName = config.getString("profile");
         motdList = config.getStringList("profiles." + profileName + ".motd");
@@ -100,7 +97,7 @@ public class MOTDManager {
             this.protocol = new ServerPing.Protocol("Requires MC 1.8 / 1.18", BMotd.getPlugin().getProxy().getProtocolVersion());
 
         } catch (IOException e) {
-            e.printStackTrace();
+            e.printStackTrace(System.out);
         }
     }
 
@@ -206,12 +203,12 @@ public class MOTDManager {
                 try (InputStream in = plugin.getResourceAsStream("config.yml")) {
                     Files.copy(in, file.toPath());
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    e.printStackTrace(System.out);
                 }
             }
             this.config = ConfigurationProvider.getProvider(YamlConfiguration.class).load(file);
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(System.out);
         }
     }
 
@@ -219,7 +216,7 @@ public class MOTDManager {
         try {
             ConfigurationProvider.getProvider(YamlConfiguration.class).save(config, file);
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(System.out);
         }
     }
 
