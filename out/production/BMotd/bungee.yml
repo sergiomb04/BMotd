@@ -1,0 +1,9 @@
+name: BMotd
+version: '${project.version}'
+main: me.imsergioh.bmotd.bmotd.BMotd
+description: Bungeecord advances motd plugin
+
+commands:
+  bmotd:
+  maintenance:
+  bwhitelist:
